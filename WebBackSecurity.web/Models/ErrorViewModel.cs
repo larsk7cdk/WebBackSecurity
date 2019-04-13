@@ -1,5 +1,3 @@
-using System;
-
 namespace WebBackSecurity.web.Models
 {
     public class ErrorViewModel

@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebBackSecurity.web.Data;
 
 namespace WebBackSecurity.web
 {
@@ -26,6 +30,17 @@ namespace WebBackSecurity.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<TodoDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Default"))
+            );
+
+            services.AddDbContext<IdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Default"),
+                    optionsBuilder => optionsBuilder.MigrationsAssembly("WebBackSecurity.web")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -39,6 +54,7 @@ namespace WebBackSecurity.web
                 app.UseExceptionHandler("/Home/Error");
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
