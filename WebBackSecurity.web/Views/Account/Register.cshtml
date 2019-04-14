@@ -10,7 +10,7 @@
     <h1>Register</h1>
     <br />
 
-    <form asp-controller="Account" asp-action="Register"  method="post" class="form-horizontal">
+    <form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal">
         <h4>Create a new account.</h4>
         <hr />
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -39,9 +39,14 @@
         </div>
         <br />
         <div class="form-group">
+            <label asp-for="CanWrite" class="col-md-2 control-label"></label>
+            <input type="checkbox" asp-for="CanWrite" />
+        </div>
+        <br />
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>
         </div>
     </form>
-    </fieldset>
+</fieldset>

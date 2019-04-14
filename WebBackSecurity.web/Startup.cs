@@ -43,6 +43,14 @@ namespace WebBackSecurity.web
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthorization(options =>
+                options.AddPolicy("TodoPolicy", policy => policy.RequireClaim("CanWrite")));
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 
@@ -62,13 +70,6 @@ namespace WebBackSecurity.web
             app.UseCookiePolicy();
 
             app.UseMvcWithDefaultRoute();
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        "default",
-            //        "{controller=Home}/{action=Index}/{id?}");
-            //});
         }
     }
 }

@@ -23,11 +23,8 @@ namespace WebBackSecurity.web.Controllers
         }
 
         // LIST
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            if (!User.Identity.IsAuthenticated) return RedirectToAction("AccessDenied");
-
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var entities = await _todoRepository.GetAllByIdAsync(user.Id);
 
@@ -37,12 +34,6 @@ namespace WebBackSecurity.web.Controllers
             var todos = entities.Select(MapToViewModel);
 
             return View("Index", todos);
-        }
-
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View("AccessDenied");
         }
 
         // DETAILS
@@ -60,6 +51,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         // CREATE
+        [Authorize(Policy = "TodoPolicy")]
         public IActionResult Create()
         {
             return View();
@@ -161,7 +153,7 @@ namespace WebBackSecurity.web.Controllers
                 Name = entity.Name,
                 Description = entity.Description,
                 IsDone = entity.IsDone
-            }; ;
+            };
         }
     }
 }

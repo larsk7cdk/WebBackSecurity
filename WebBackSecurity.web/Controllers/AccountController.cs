@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebBackSecurity.web.ViewModels.Account;
@@ -38,7 +39,13 @@ namespace WebBackSecurity.web.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
+                {
+                    if (model.CanWrite)
+                        await _userManager.AddClaimAsync(user, new Claim("CanWrite", "true"));
+
                     return RedirectToAction("Login", "Account");
+                }
+
                 foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
             }
 
@@ -81,6 +88,12 @@ namespace WebBackSecurity.web.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        // ACCESS DENIED
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
         }
     }
 }
