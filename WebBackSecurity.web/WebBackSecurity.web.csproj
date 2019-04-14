@@ -17,4 +17,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="Views\Todo\Create.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Todo\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

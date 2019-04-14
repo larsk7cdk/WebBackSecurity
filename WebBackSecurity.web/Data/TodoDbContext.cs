@@ -11,12 +11,6 @@ namespace WebBackSecurity.web.Data
             Database.EnsureCreated();
         }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
-        }
-
         public DbSet<Todo> Todos { get; set; }
     }
 }

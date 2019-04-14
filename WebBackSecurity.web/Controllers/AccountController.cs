@@ -17,16 +17,13 @@ namespace WebBackSecurity.web.Controllers
             _signInManager = signInManager;
         }
 
-        //
-        // GET: /Account/Register
+        // REIGSTER
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -45,20 +42,16 @@ namespace WebBackSecurity.web.Controllers
                 foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        //
-        // GET: /Account/Login
+        // LOGIN
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-
-        //POST: /Account/Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
@@ -78,10 +71,10 @@ namespace WebBackSecurity.web.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
+        // LOGOUT
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

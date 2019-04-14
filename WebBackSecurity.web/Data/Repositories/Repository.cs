@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WebBackSecurity.web.Data.Interfaces;
 
 namespace WebBackSecurity.web.Data.Repositories
 {
@@ -15,10 +15,13 @@ namespace WebBackSecurity.web.Data.Repositories
             Context = context;
         }
 
-        public int Count(Func<T, bool> predicate)
-        {
-            return Context.Set<T>().Where(predicate).Count();
-        }
+        public IEnumerable<T> Find(Func<T, bool> predicate) => Context.Set<T>().Where(predicate);
+
+        public IEnumerable<T> GetAll() => Context.Set<T>();
+
+        public T GetById(int id) => Context.Set<T>().Find(id);
+
+        public Task<T> GetByIdAsync(int id) => Context.Set<T>().FindAsync(id);
 
         public void Create(T entity)
         {
@@ -26,25 +29,10 @@ namespace WebBackSecurity.web.Data.Repositories
             Save();
         }
 
-        public void Delete(T entity)
+        public async Task CreateAsync(T entity)
         {
-            Context.Remove(entity);
-            Save();
-        }
-
-        public IEnumerable<T> Find(Func<T, bool> predicate)
-        {
-            return Context.Set<T>().Where(predicate);
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return Context.Set<T>();
-        }
-
-        public T GetById(int id)
-        {
-            return Context.Set<T>().Find(id);
+            Context.Add(entity);
+            await SaveAsync();
         }
 
         public void Update(T entity)
@@ -53,9 +41,28 @@ namespace WebBackSecurity.web.Data.Repositories
             Save();
         }
 
-        protected void Save()
+        public async Task UpdateAsync(T entity)
         {
-            Context.SaveChanges();
+            Context.Entry(entity).State = EntityState.Modified;
+            await SaveAsync();
         }
+
+        public void Delete(T entity)
+        {
+            Context.Remove(entity);
+            Save();
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            Context.Remove(entity);
+            await SaveAsync();
+        }
+
+        public int Count(Func<T, bool> predicate) => Context.Set<T>().Where(predicate).Count();
+
+        protected void Save() => Context.SaveChanges();
+
+        protected async Task SaveAsync() => await Context.SaveChangesAsync();
     }
 }

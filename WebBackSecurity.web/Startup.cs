@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebBackSecurity.web.Data;
-using WebBackSecurity.web.Data.Interfaces;
 using WebBackSecurity.web.Data.Repositories;
 
 namespace WebBackSecurity.web
@@ -62,12 +61,14 @@ namespace WebBackSecurity.web
             app.UseAuthentication();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        "default",
+            //        "{controller=Home}/{action=Index}/{id?}");
+            //});
         }
     }
 }
