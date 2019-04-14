@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebBackSecurity.web.Models;
+using WebBackSecurity.web.Data.Entities;
 
 namespace WebBackSecurity.web.Data
 {
@@ -9,6 +9,12 @@ namespace WebBackSecurity.web.Data
             : base(options)
         {
             Database.EnsureCreated();
+        }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            
         }
 
         public DbSet<Todo> Todos { get; set; }

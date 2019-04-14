@@ -9,7 +9,7 @@ Du kan bygge din login fx med "CookieAuthenticationDefaults" eller vha. NET Core
 
 Hvis bogens gennemgang af Sikkerhed virker for kringlet kan du se følgende links for inspiration:
 
-ASP.NET Core: Security. (Kapitel 1). Lynda.com
+ASP.NET Core: Security. (Kapitel 1). Lynda.com https://www.lynda.com/ASP-NET-Core-tutorials/ASP-NET-Core-Security/612194-2.html
 
 og 
 

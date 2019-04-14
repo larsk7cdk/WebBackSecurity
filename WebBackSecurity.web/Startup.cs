@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebBackSecurity.web.Data;
+using WebBackSecurity.web.Data.Interfaces;
+using WebBackSecurity.web.Data.Repositories;
 
 namespace WebBackSecurity.web
 {
@@ -43,6 +45,9 @@ namespace WebBackSecurity.web
                 .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+
+            services.AddTransient<ITodoRepository, TodoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
