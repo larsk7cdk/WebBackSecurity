@@ -46,12 +46,14 @@ namespace WebBackSecurity.web
             services.AddAuthorization(options =>
                 options.AddPolicy("TodoPolicy", policy => policy.RequireClaim("CanWrite")));
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.AccessDeniedPath = "/Account/AccessDenied";
-            });
+            services.ConfigureApplicationCookie(options => { options.AccessDeniedPath = "/Account/AccessDenied"; });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    options.Filters.Add(new RequireHttpsAttribute());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 
             services.AddTransient<ITodoRepository, TodoRepository>();
@@ -66,6 +68,10 @@ namespace WebBackSecurity.web
                 app.UseExceptionHandler("/Home/Error");
 
             app.UseStaticFiles();
+
+            app.UseHttpsRedirection();
+            app.UseHsts();
+
             app.UseAuthentication();
             app.UseCookiePolicy();
 

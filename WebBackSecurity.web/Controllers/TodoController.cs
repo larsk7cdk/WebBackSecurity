@@ -58,7 +58,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,IsDone")] TodoViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -93,7 +93,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,IsDone")] TodoViewModel model)
         {
             if (id != model.Id) return NotFound();
@@ -135,7 +135,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var entity = await _todoRepository.GetByIdAsync((int)id);
