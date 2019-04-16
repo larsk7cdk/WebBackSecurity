@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -51,7 +52,6 @@ namespace WebBackSecurity.web.Controllers
         }
 
         // CREATE
-        [Authorize(Policy = "TodoPolicy")]
         public IActionResult Create()
         {
             return View();
@@ -67,6 +67,7 @@ namespace WebBackSecurity.web.Controllers
 
             var entity = new Todo
             {
+                CreatedDateTime = DateTime.Now,
                 UserId = user.Id,
                 Name = model.Name,
                 Description = model.Description,
@@ -79,6 +80,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         // EDIT
+        [Authorize(Policy = "TodoPolicyCanEdit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -121,6 +123,7 @@ namespace WebBackSecurity.web.Controllers
         }
 
         // DELETE
+        [Authorize(Policy = "TodoPolicyCanDelete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -150,6 +153,7 @@ namespace WebBackSecurity.web.Controllers
             return new TodoViewModel
             {
                 Id = entity.Id,
+                CreatedDateTime = entity.CreatedDateTime,
                 Name = entity.Name,
                 Description = entity.Description,
                 IsDone = entity.IsDone

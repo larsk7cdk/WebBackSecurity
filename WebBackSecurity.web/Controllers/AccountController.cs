@@ -40,8 +40,11 @@ namespace WebBackSecurity.web.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (model.CanWrite)
-                        await _userManager.AddClaimAsync(user, new Claim("CanWrite", "true"));
+                    if (model.CanEdit)
+                        await _userManager.AddClaimAsync(user, new Claim("CanEdit", "true"));
+
+                    if (model.CanDelete)
+                        await _userManager.AddClaimAsync(user, new Claim("CanDelete", "true"));
 
                     return RedirectToAction("Login", "Account");
                 }

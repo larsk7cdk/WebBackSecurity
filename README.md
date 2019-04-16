@@ -14,3 +14,11 @@ ASP.NET Core: Security. (Kapitel 1). Lynda.com https://www.lynda.com/ASP-NET-Cor
 og 
 
 https://youtu.be/WoseLEA3scI
+
+
+## Læs dette først
+
+Der skal oprettes 2 tabeller i databasen med følgende kommandoer i Package Manager Console
+
+- Update-Database -c IdentityDbContext
+- Update-Database -c TodoDbContext

@@ -44,7 +44,10 @@ namespace WebBackSecurity.web
                 .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
-                options.AddPolicy("TodoPolicy", policy => policy.RequireClaim("CanWrite")));
+            {
+                options.AddPolicy("TodoPolicyCanEdit", policy => policy.RequireClaim("CanEdit"));
+                options.AddPolicy("TodoPolicyCanDelete", policy => policy.RequireClaim("CanDelete"));
+            });
 
             services.ConfigureApplicationCookie(options => { options.AccessDeniedPath = "/Account/AccessDenied"; });
 

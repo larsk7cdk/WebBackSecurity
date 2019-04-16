@@ -21,7 +21,10 @@ namespace WebBackSecurity.web.ViewModels.Account
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Kan oprette Todo")]
-        public bool CanWrite { get; set; }
+        [Display(Name = "Kan redigere Todo's")]
+        public bool CanEdit { get; set; }
+
+        [Display(Name = "Kan slette Todo's")]
+        public bool CanDelete { get; set; }
     }
 }

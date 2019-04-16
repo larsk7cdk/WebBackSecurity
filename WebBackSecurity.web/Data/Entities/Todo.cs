@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebBackSecurity.web.Data.Entities
 {
@@ -6,6 +7,8 @@ namespace WebBackSecurity.web.Data.Entities
     {
         [Key]
         public int Id { get; set; }
+
+        public DateTime CreatedDateTime { get; set; }
 
         public string UserId { get; set; }
 

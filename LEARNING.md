@@ -6,5 +6,9 @@
    - Microsoft.AspNetCore.Identity
 
 2. Tilret startup.cs
-3. Add-Migration InitialCreate -c IdentityDbContext
-4. Update-Database -c IdentityDbContext
+
+3a. Add-Migration InitialCreate -c IdentityDbContext -o Migrations/Identity
+3b. Add-Migration InitialCreate -c TodoDbContext -o Migrations/ToDo
+
+4a. Update-Database -c IdentityDbContext
+4b. Update-Database -c TodoDbContext

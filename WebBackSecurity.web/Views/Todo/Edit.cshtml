@@ -1,7 +1,7 @@
 ﻿@model WebBackSecurity.web.ViewModels.Todo.TodoViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Rediger";
 }
 
 <h1>Edit</h1>
@@ -23,19 +23,25 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="CreatedDateTime" class="control-label"></label>
+                <div class="form-control">
+                    @Model.CreatedDateTime.ToString("dd/MM/yyyy HH:mm")
+                </div>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsDone" /> @Html.DisplayNameFor(model => model.IsDone)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Gem" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tilbage til ToDo's</a>
 </div>
 
