@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using WebBackSecurity.web.Data;
 using WebBackSecurity.web.Data.Repositories;
 
@@ -34,17 +37,36 @@ namespace WebBackSecurity.web
             });
 
             services.AddDbContext<TodoDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Default2"))
+                options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
 
             services.AddDbContext<IdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Default2"),
+                options.UseSqlServer(Configuration.GetConnectionString("Default"),
                     optionsBuilder => optionsBuilder.MigrationsAssembly("WebBackSecurity.web")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                            "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddAuthorization(options =>
             {

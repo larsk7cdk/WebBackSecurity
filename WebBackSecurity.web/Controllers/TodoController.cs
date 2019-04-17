@@ -23,19 +23,19 @@ namespace WebBackSecurity.web.Controllers
             _todoRepository = todoRepository;
         }
 
-        // LIST
-        public async Task<IActionResult> Index()
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var entities = await _todoRepository.GetAllByIdAsync(user.Id);
+            // LIST
+            public async Task<IActionResult> Index()
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var entities = await _todoRepository.GetAllByIdAsync(user.Id);
 
-            if (entities.Count == 0)
-                return View("Empty");
+                if (entities.Count == 0)
+                    return View("Empty");
 
-            var todos = entities.Select(MapToViewModel);
+                var todos = entities.Select(MapToViewModel);
 
-            return View("Index", todos);
-        }
+                return View("Index", todos);
+            }
 
         // DETAILS
         public async Task<IActionResult> Details(int? id)
