@@ -16,20 +16,6 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Todo" asp-action="Index">Todo</a>
                 </li>
-
-                @*@if (SignInManager.IsSignedIn(User))
-                    {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Todo" asp-action="Index">Todo</a>
-                    </li>
-                    }
-                    else
-                    {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Todo</a>
-                    </li>
-                    }*@
-
                 @if (!SignInManager.IsSignedIn(User))
                 {
                 <li class="nav-item">

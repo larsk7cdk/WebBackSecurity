@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebBackSecurity.web.ViewModels.Account;
@@ -57,8 +59,9 @@ namespace WebBackSecurity.web.Controllers
 
         // LOGIN
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
@@ -75,10 +78,10 @@ namespace WebBackSecurity.web.Controllers
                 {
                     if (Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
-                    return RedirectToAction(nameof(TodoController.Index), "Todo");
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Login forsøg mislykkedes.");
             }
 
             return View(model);

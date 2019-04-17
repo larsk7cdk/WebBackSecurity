@@ -11,7 +11,7 @@
     <h1>Login</h1>
     <br />
 
-    <form asp-controller="Account" role="form" asp-action="Login" class="form-horizontal">
+    <form asp-controller="Account" role="form" asp-action="Login" class="form-horizontal" asp-route-returnurl="@ViewData["ReturnUrl"]" >
         <div asp-validation-summary="All" class="input-validation-error"></div>
 
         <div class="form-group">
@@ -42,7 +42,7 @@
         </div>
         <br />
         <p>
-            <a asp-action="Register">Register as a new user?</a>
+            <a asp-action="Register">Register som ny bruger?</a>
         </p>
     </form>
 </fieldset>

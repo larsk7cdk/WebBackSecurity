@@ -58,7 +58,6 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,IsDone")] TodoViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -95,7 +94,6 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,IsDone")] TodoViewModel model)
         {
             if (id != model.Id) return NotFound();
