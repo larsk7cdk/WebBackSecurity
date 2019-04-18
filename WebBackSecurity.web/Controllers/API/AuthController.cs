@@ -22,8 +22,8 @@ namespace WebBackSecurity.web.Controllers.API
             _signInManager = signInManager;
         }
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        [HttpPost("Authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace WebBackSecurity.web.Controllers.API
                         {
                             new Claim(ClaimTypes.Email, model.Email)
                         }),
-                        Expires = DateTime.UtcNow.AddDays(7),
+                        Expires = DateTime.UtcNow.AddMinutes(20),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                             SecurityAlgorithms.HmacSha256Signature)
                     };

@@ -27,8 +27,14 @@ namespace WebBackSecurity.web.Controllers.API
         // LIST
         public async Task<IActionResult> Index()
         {
-            var email = HttpContext.User.Claims.First().Value;
+            var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type.EndsWith("name") )?.Value;
+
+            if (email == null)
+                return BadRequest();
+
             var user = await _userManager.FindByEmailAsync(email);
+
+
             var entities = await _todoRepository.GetAllByIdAsync(user.Id);
 
 

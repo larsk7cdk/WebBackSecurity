@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using WebBackSecurity.web.Models;
+using WebBackSecurity.web.ViewModels;
 
 namespace WebBackSecurity.web.Controllers
 {

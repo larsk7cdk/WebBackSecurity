@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -49,16 +48,18 @@ namespace WebBackSecurity.web
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddAuthentication(x =>
+            services.AddAuthentication()
+                .AddCookie(options =>
                 {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.Cookie.Name = "WebBackSecurityCookie";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.ExpireTimeSpan = new TimeSpan(0, 20, 0);
                 })
-                .AddJwtBearer(x =>
+                .AddJwtBearer(options =>
                 {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
@@ -72,13 +73,6 @@ namespace WebBackSecurity.web
             {
                 options.AddPolicy("TodoPolicyCanEdit", policy => policy.RequireClaim("CanEdit"));
                 options.AddPolicy("TodoPolicyCanDelete", policy => policy.RequireClaim("CanDelete"));
-            });
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = "WebBackSecurityCookie";
-                options.AccessDeniedPath = "/Account/AccessDenied";
-                options.ExpireTimeSpan = new TimeSpan(0, 20, 0);
             });
 
             services.AddMvc(options =>
@@ -96,14 +90,18 @@ namespace WebBackSecurity.web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
             else
+            {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
-            app.UseHsts();
 
             app.UseAuthentication();
 

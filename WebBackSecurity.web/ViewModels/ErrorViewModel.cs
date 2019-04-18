@@ -1,4 +1,4 @@
-namespace WebBackSecurity.web.Models
+namespace WebBackSecurity.web.ViewModels
 {
     public class ErrorViewModel
     {

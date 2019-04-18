@@ -16,9 +16,30 @@ og
 https://youtu.be/WoseLEA3scI
 
 
-## Læs dette først
+## ToDo inden start af løsningen
 
 Der skal oprettes 2 tabeller i databasen med følgende kommandoer i Package Manager Console
 
 - Update-Database -c IdentityDbContext
 - Update-Database -c TodoDbContext
+
+
+## Test af API
+
+Hvis man har oprettet en eller flere ToDo's, kan man se dem via postman på følgende måde
+
+1. Kald auth controlleren for at hente en JWT Bearer token 
+   https://localhost:5001/api/auth/authenticate
+2. Kopier Bearer token og kald API listen med en POST på
+   https://localhost:5001/api/todoapi
+   
+   Tilføj en header Authorization med value Bearer "token"
+   
+   Og med følgende body
+   
+   {
+     "email": "Email",
+     "password" : "kodeord"
+   }
+
+   Dette returnerer de ToDo's som er oprettet under brugeren
