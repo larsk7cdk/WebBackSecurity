@@ -8,7 +8,6 @@ namespace WebBackSecurity.web.Data
         public TodoDbContext(DbContextOptions<TodoDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         public DbSet<Todo> Todos { get; set; }
