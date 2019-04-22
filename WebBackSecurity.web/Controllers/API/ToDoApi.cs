@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,12 +26,13 @@ namespace WebBackSecurity.web.Controllers.API
         }
 
         // LIST
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type.EndsWith("name") )?.Value;
+            var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type.EndsWith("emailaddress"))?.Value;
 
             if (email == null)
-                return BadRequest();
+                return Unauthorized();
 
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -46,7 +48,25 @@ namespace WebBackSecurity.web.Controllers.API
             return Ok(todos);
         }
 
+        // DETAILS
+        [HttpGet("details/{id}")]
+        public async Task<IActionResult> Details([Required]int id)
+        {
+            var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type.EndsWith("emailaddress"))?.Value;
 
+            if (email == null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var entity = await _todoRepository.GetByIdAsync(user.Id, id);
+
+            if (entity == null) return NotFound();
+
+            var todo = MapToViewModel(entity);
+
+            return Ok(todo);
+        }
 
         // MAPPER
         private static TodoViewModel MapToViewModel(Todo entity)
@@ -60,6 +80,5 @@ namespace WebBackSecurity.web.Controllers.API
                 IsDone = entity.IsDone
             };
         }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,26 +49,37 @@ namespace WebBackSecurity.web
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            // --- UDKOMMENTER NEDENSTÅENDE KODE FOR AT TESTE API SIKKERHED ---
+
             services.AddAuthentication()
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "WebBackSecurityCookie";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                     options.ExpireTimeSpan = new TimeSpan(0, 20, 0);
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-                            "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING")),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
                 });
+
+
+            // --- INDKOMMENTER NEDENSTÅENDE KODE FOR AT TESTE API SIKKERHED ---
+
+            //services.AddAuthentication(options =>
+            //    {
+            //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    })
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.RequireHttpsMetadata = false;
+            //        options.SaveToken = false;
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuerSigningKey = false,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+            //                "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING")),
+            //            ValidateIssuer = false,
+            //            ValidateAudience = false
+            //        };
+            //    });
 
             services.AddAuthorization(options =>
             {

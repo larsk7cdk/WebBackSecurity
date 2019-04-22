@@ -26,6 +26,8 @@ Der skal oprettes 2 tabeller i databasen med følgende kommandoer i Package Manag
 
 ## Test af API
 
+For at teste med sikkerhed på WEB API skal kode i startup.cs på linie 54-60 udkommenteres og linie 65 - 82 indkommenteres. 
+
 Hvis man har oprettet en eller flere ToDo's, kan man se dem via postman på følgende måde
 
 1. Kald auth controlleren for at hente en JWT Bearer token 

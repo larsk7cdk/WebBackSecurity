@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -38,11 +39,15 @@ namespace WebBackSecurity.web.Controllers
             }
 
         // DETAILS
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details([Required]int id)
         {
-            if (id == null) return NotFound();
+            //if (id == null) return NotFound();
 
-            var entity = await _todoRepository.GetByIdAsync((int)id);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+
+            var entity = await _todoRepository.GetByIdAsync(id);
 
             if (entity == null) return NotFound();
 
@@ -80,11 +85,9 @@ namespace WebBackSecurity.web.Controllers
 
         // EDIT
         [Authorize(Policy = "TodoPolicyCanEdit")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit([Required]int id)
         {
-            if (id == null) return NotFound();
-
-            var entity = await _todoRepository.GetByIdAsync((int)id);
+            var entity = await _todoRepository.GetByIdAsync(id);
 
             if (entity == null) return NotFound();
 
@@ -94,15 +97,15 @@ namespace WebBackSecurity.web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,IsDone")] TodoViewModel model)
+        public async Task<IActionResult> Edit([Required]int id, [Bind("Id,Name,Description,IsDone")] TodoViewModel model)
         {
-            if (id != model.Id) return NotFound();
+            if (id != model.Id) return BadRequest();
 
             if (!ModelState.IsValid) return View(model);
 
             try
             {
-                var entity = await _todoRepository.GetByIdAsync((int)id);
+                var entity = await _todoRepository.GetByIdAsync(id);
                 entity.Name = model.Name;
                 entity.Description = model.Description;
                 entity.IsDone = model.IsDone;
@@ -112,7 +115,7 @@ namespace WebBackSecurity.web.Controllers
 
             catch (DbUpdateConcurrencyException)
             {
-                var entity = await _todoRepository.GetByIdAsync((int)id);
+                var entity = await _todoRepository.GetByIdAsync(id);
                 if (entity == null) return NotFound();
                 throw;
             }
@@ -122,11 +125,9 @@ namespace WebBackSecurity.web.Controllers
 
         // DELETE
         [Authorize(Policy = "TodoPolicyCanDelete")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete([Required]int id)
         {
-            if (id == null) return NotFound();
-
-            var entity = await _todoRepository.GetByIdAsync((int)id);
+            var entity = await _todoRepository.GetByIdAsync(id);
 
             if (entity == null) return NotFound();
 
@@ -139,7 +140,7 @@ namespace WebBackSecurity.web.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var entity = await _todoRepository.GetByIdAsync((int)id);
+            var entity = await _todoRepository.GetByIdAsync(id);
             await _todoRepository.DeleteAsync(entity);
 
             return RedirectToAction(nameof(Index));
